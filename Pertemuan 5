@@ -1,0 +1,221 @@
+
+import 'package:flutter/material.dart';
+
+class DetailMenu extends StatefulWidget {
+  const DetailMenu({super.key});
+
+  @override
+  State<DetailMenu> createState() => _DetailMenuState();
+}
+
+class _DetailMenuState extends State<DetailMenu> {
+  bool isFavorite = false;
+  int jumlahPesanan = 2;
+  String catatanPesanan = '';
+  final int hargaSatuan = 25000;
+
+  @override
+  Widget build(BuildContext context) {
+    final totalHarga = hargaSatuan * jumlahPesanan;
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          'Detail Menu',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.brown,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                isFavorite = !isFavorite;
+              });
+            },
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.red : Colors.white,
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset(
+              'assets/image(2).png',
+              width: double.infinity,
+              height: 250,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  height: 250,
+                  color: Colors.brown.shade100,
+                  child: const Center(
+                    child: Icon(Icons.local_cafe, size: 70),
+                  ),
+                );
+              },
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Expanded(
+                        child: Text(
+                          'Kopi Susu Gula Aren',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'Rp25.000',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.brown,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text('⭐ 4.9'),
+                      Text('🕒 10 Menit'),
+                      Text('🔥 150 Kal'),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  const Text(
+                    'Atur Porsi',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          if (jumlahPesanan > 1) {
+                            setState(() {
+                              jumlahPesanan--;
+                            });
+                          }
+                        },
+                        icon: const Icon(Icons.remove_circle_outline),
+                      ),
+                      Text(
+                        '$jumlahPesanan',
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            jumlahPesanan++;
+                          });
+                        },
+                        icon: const Icon(Icons.add_circle_outline),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  const Text(
+                    'Deskripsi Menu',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  const Text(
+                    'Kopi Susu Gula Aren merupakan perpaduan '
+                    'kopi, susu segar, dan gula aren yang memberikan '
+                    'rasa manis serta aroma kopi yang khas.',
+                    style: TextStyle(fontSize: 15),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  const Text(
+                    'Catatan untuk Barista (Opsional)',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        catatanPesanan = value;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      hintText: 'Contoh: Kurangi gula...',
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 2,
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  if (catatanPesanan.isNotEmpty)
+                    Text('Catatan: $catatanPesanan'),
+
+                  const SizedBox(height: 24),
+
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Pesanan berhasil dibuat!'),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.brown,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.all(16),
+                      ),
+                      child: Text(
+                        'Pesan Sekarang (Rp$totalHarga)',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
